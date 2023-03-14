@@ -83,6 +83,25 @@ public class MyLinkedList<E> implements List<E> {
 	@Override
 	public void add(int index, E element) {
 		//TODO: FILL THIS IN!
+		if (index < 0) {
+			throw new IllegalArgumentException("index has to be more than zero");
+		}
+		if (head == null) {
+			head = new Node(element);
+		} else {
+			if (index == 0) {
+				head = new Node(element, head);
+			} else {
+				Node oldNode = head;
+				int i = 0;
+				while (i < index-1 && oldNode.next != null) {
+					oldNode = oldNode.next;
+					i++;
+				}
+				oldNode.next = new Node(element, oldNode.next);
+			}
+		}
+		size++;
 	}
 
 	@Override
@@ -144,6 +163,24 @@ public class MyLinkedList<E> implements List<E> {
 	@Override
 	public int indexOf(Object target) {
 		//TODO: FILL THIS IN!
+		if (head == null) {
+			return -1;
+		}
+		Node node = head;
+		int i = 0;
+		while (node != null) {
+			if (node.data == null) {
+				if (node.data == target) {
+					return i;
+				}
+			} else {
+				if (node.data.equals(target)) {
+					return i;
+				}
+			}
+			node = node.next;
+			i++;
+		}
 		return -1;
 	}
 
@@ -209,7 +246,28 @@ public class MyLinkedList<E> implements List<E> {
 	@Override
 	public E remove(int index) {
 		//TODO: FILL THIS IN!
-		return null;
+		if (index < 0 ) {
+			throw new IllegalArgumentException("Index should be more than 0");
+		}
+		if (head == null || index > size - 1) {
+			return null;
+		}
+		E data = null;
+		if (index == 0) {
+			data = head.data;
+			head = head.next;
+		} else {
+			Node oldNode = head;
+			int i = 1;
+			while (oldNode.next != null && i < index) {
+				oldNode = oldNode.next;
+				i++;
+			}
+			data = oldNode.next.data;
+			oldNode.next = oldNode.next.next;
+		}
+		size--;
+		return data;
 	}
 
 	@Override
